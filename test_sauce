@@ -140,5 +140,18 @@ class Test_Sauce:
 # Bir önceki sayfanın yüklendiğini doğrula
             assert "Swag Labs" in self.driver.title
             print("Continue Shopping Test Result: PASS")
+# Ürün sıralaması testi
+    def test_product_sorting(self):
+        self.login("standard_user", "secret_sauce")
+        sort_dropdown = WebDriverWait(self.driver, 20).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "product_sort_container")))
+        sort_dropdown.click()
+        sort_option_low_to_high = WebDriverWait(self.driver, 20).until(
+            EC.visibility_of_element_located((By.XPATH, "//option[@value='lohi']")))
+        sort_option_low_to_high.click()
+        first_product_price_sorted = WebDriverWait(self.driver, 20).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "inventory_item_price")))
+        assert first_product_price_sorted.text == "$7.99", "Ürünler düşükten yükseğe doğru sıralanmadı"
+
 
 
